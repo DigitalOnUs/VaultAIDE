@@ -113,7 +113,7 @@ def test_init():
     cache_name = "test.db"
     db = pickledb.load(cache_name, False)
     ''' initial args '''
-    vault_address = "https://vault:8300"
+    vault_address = "https://vault:8200"
     vault_token = "mytoken"
 
     ''' populating info '''
