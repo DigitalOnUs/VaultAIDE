@@ -1,0 +1,29 @@
+version: '3'
+services:
+    web:
+        build: 
+         context: ./
+         dockerfile: Dockerfile
+        environment:
+            - VAULT_ADDR=https://vault:8300
+            - VAULT_TOKEN=mytoken
+        ports:
+            - "5000:5000"
+            - "9090:9090"
+        links:
+            - "vault"
+        restart: always
+    vault:
+        build:  
+         context: ./
+         dockerfile: Dockerfile_vault
+        volumes:
+          - ./vault-config.hcl:/vault/config/vault-config.hcl
+        ports:
+          - "8300:8300"
+        environment:
+          - VAULT_SKIP_VERIFY=true
+          - VAULT_ADDR=https://127.0.0.1:8300 
+        cap_add:
+          - IPC_LOCK
+        restart: always

@@ -1,0 +1,259 @@
+{% extends 'index.html' %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-1 offset-md-1">
+          <!-- Page Header -->
+          <div class="page-header row no-gutters py-4 mb-3 border-bottom">
+            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+              <span class="text-uppercase page-subtitle">Vault AIDE</span>
+              <h3 class="page-title">Configuration</h3>
+            </div>
+          </div>
+          <!-- End Page Header -->
+          <div class="row">
+            <div class="col-lg-8 mb-4">
+              <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                  <h6 class="m-0">Connections</h6>
+                </div>
+                <div class="card-body p-0 pb-3 text-center">
+                  <table class="table mb-0">
+                    <thead class="bg-light">
+                      <tr>
+                        <th scope="col" class="border-0" width="34%">Component</th>
+                        <th scope="col" class="border-0" width="33%">Addresses</th>
+                        <th scope="col" class="border-0" width="33%">TLS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="mt-1">Vault</span>
+                        </td>
+                        <td>
+                          <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" placeholder="HOST" id="vault-host">
+                            <div class="input-group-append">
+                              <span class="input-group-text">:</span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="PORT" id="vault-port">
+                          </div>
+                        </td>
+                        <td>
+                          <div class="custom-control custom-toggle custom-toggle-sm mb-1 text-center" style="margin-left: 44% !important" title="Enable if your Vault has TLS integrated">
+                            <input type="checkbox" id="vault-tls" name="vault-tls" class="custom-control-input">
+                            <label class="custom-control-label" for="vault-tls"></label>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Audit Devices</td>
+                        <td>
+                          <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" placeholder="HOST" id="ad-host">
+                            <div class="input-group-append">
+                              <span class="input-group-text">:</span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="PORT" id="ad-port">
+                          </div>
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>HTTP interface</td>
+                        <td>
+                          <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" placeholder="HOST" id="http-host">
+                            <div class="input-group-append">
+                              <span class="input-group-text">:</span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="PORT" id="http-port">
+                          </div>
+                        </td>
+                        <td>
+                          <div class="custom-control custom-toggle custom-toggle-sm mb-1" style="margin-left: 44% !important">
+                            <input type="checkbox" id="http-tls" name="http-tls" class="custom-control-input">
+                            <label class="custom-control-label" for="http-tls"></label>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item p-0 px-3 pt-3">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-4 mb-3">
+                      <!-- Checkboxes -->
+                      <strong class="text-muted d-block mb-2">Notifications</strong>
+                      <fieldset>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxDefault">
+                          <label class="custom-control-label" for="formsCheckboxDefault">Version Updates</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked1">
+                          <label class="custom-control-label" for="formsCheckboxChecked1">Extant Leases</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked2">
+                          <label class="custom-control-label" for="formsCheckboxChecked2">Adoption Stats</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked3">
+                          <label class="custom-control-label" for="formsCheckboxChecked3">Lease Optimization</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked4">
+                          <label class="custom-control-label" for="formsCheckboxChecked4">Admin Access Alert</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked5">
+                          <label class="custom-control-label" for="formsCheckboxChecked5">Admin Creation Alert</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked6">
+                          <label class="custom-control-label" for="formsCheckboxChecked6">Unused Resources</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked7">
+                          <label class="custom-control-label" for="formsCheckboxChecked7">Intrusion Detection</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked8">
+                          <label class="custom-control-label" for="formsCheckboxChecked8">Vault Posture Score</label>
+                        </div>
+                        <div class="custom-control custom-checkbox mb-1">
+                          <input type="checkbox" class="custom-control-input" checked id="formsCheckboxChecked9">
+                          <label class="custom-control-label" for="formsCheckboxChecked9">Auth Method Suggestion</label>
+                        </div>
+                      </fieldset>
+                      <!-- / Checkboxes -->
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-4 mb-4">
+              <!-- Input & Button Groups -->
+              <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                  <h6 class="m-0">Tokens</h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item px-3">
+                    <form>
+                      <!-- Input Groups -->
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Vault</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Token" aria-label="Token" aria-describedby="basic-addon1" id="vault-token">
+                      </div>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Slack</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Token" aria-label="Token" aria-describedby="basic-addon1" id="slack-token">
+                      </div>
+                      <!-- Input Groups -->
+                    </form>
+                  </li>
+                </ul>
+              </div>
+              <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                  <h6 class="m-0">Slack specific</h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item px-3">
+                    <form>
+                      <!-- Input Groups -->
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Channel</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" id="slack-channel">
+                      </div>
+                      <!-- Input Groups -->
+                    </form>
+                  </li>
+                </ul>
+              </div>
+              <!-- / Input & Button Groups -->
+              <div class="row mb-3">
+                <div class="col">
+                  <button type="button" class="mb-2 btn btn-success mr-2" onclick="saveConfig()">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div> 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript">
+  function saveConfig() {
+    var vault_host = document.getElementById("vault-host").value
+    var vault_port = document.getElementById("vault-port").value
+    var vault_tls = document.getElementById("vault-tls").checked
+    var ad_host = document.getElementById("ad-host").value
+    var ad_port = document.getElementById("ad-port").value
+    var http_host = document.getElementById("http-host").value
+    var http_port = document.getElementById("http-port").value
+    var http_tls = document.getElementById("http-tls").checked
+    var vault_token = document.getElementById("vault-token").value
+    var slack_token = document.getElementById("slack-token").value
+    var slack_channel = document.getElementById("slack-channel").value
+
+    /* Notifications flags */
+    var version = document.getElementById("formsCheckboxDefault").checked
+    var ext_leases = document.getElementById("formsCheckboxChecked1").checked
+    var adoption = document.getElementById("formsCheckboxChecked2").checked
+    var lease_opt = document.getElementById("formsCheckboxChecked3").checked
+    var admin_access = document.getElementById("formsCheckboxChecked4").checked
+    var admin_creation = document.getElementById("formsCheckboxChecked5").checked
+    var unused_resources = document.getElementById("formsCheckboxChecked6").checked
+    var intrusion = document.getElementById("formsCheckboxChecked7").checked
+    var score = document.getElementById("formsCheckboxChecked8").checked
+    var auth_method = document.getElementById("formsCheckboxChecked9").checked
+
+    var config_info = {
+      "vault_host": vault_host,
+      "vault_port": vault_port,
+      "vault_tls": vault_tls,
+      "ad_host": ad_host,
+      "ad_port": ad_port,
+      "http_host": http_host,
+      "http_port": http_port,
+      "http_tls": http_tls,
+      "vault_token": vault_token,
+      "slack_token": slack_token,
+      "slack_channel": slack_channel,
+      "task_array": { 
+        "version": version,
+        "ext_leases": ext_leases,
+        "adoption": adoption,
+        "lease_opt": lease_opt,
+        "admin_access": admin_access,
+        "admin_creation": admin_creation,
+        "unused_resources": unused_resources,
+        "intrusion": intrusion,
+        "score": score,
+        "auth_method": auth_method
+      }        
+    }
+
+    $.ajax({
+        data: config_info,
+        type: 'POST',
+        url: '/save-config'
+    }).done(function() {
+      swal("Done!", "Configuration has been saved", "success")
+    });
+  }
+</script>
+{% endblock %}
