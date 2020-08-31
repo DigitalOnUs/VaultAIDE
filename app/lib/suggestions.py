@@ -12,9 +12,9 @@ class Suggestions:
         self.channel = self.db.get_data('slack_channel')
 
     def suggest_version(self):
-    	'''
-    		Version updates
-    	'''
+        '''
+            Version updates
+        '''
         versions = self.github.get_latest_releases()
         current = self.vault.get_version()
         latest = versions[0].lstrip('v')
@@ -52,9 +52,9 @@ class Suggestions:
         return True
 
     def adoption_stats(self):
-    	'''
-    		Adoption Statistics
-    	'''
+        '''
+            Adoption Statistics
+        '''
         secrets_engine = len([k  for  k in self.vault.get_secrets_engine_list()])
         auth_methods = len([k  for  k in self.vault.get_auth_methods()])
         policies = len([k  for  k in self.vault.get_policies()])
@@ -81,9 +81,9 @@ class Suggestions:
         return True
 
     def adoption_stats_detailed(self):
-    	'''
-    		Adoption Statistics Detailed
-    	'''
+        '''
+            Adoption Statistics Detailed
+        '''
 
         total_entities = self.vault.get_total_entities_count().get('keys', [])
 
@@ -99,9 +99,9 @@ class Suggestions:
         return False
 
     def extant_leases(self):
-    	'''
-    		Leases information
-    	'''
+        '''
+            Leases information
+        '''
         leases_detail = self.vault.get_leases_detail()
         
         # Suggestion
@@ -116,7 +116,7 @@ class Suggestions:
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Shortest remaining ttl: {}".format(leases_detail['shortest_ttl']))
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Never expire: {}".format(leases_detail['infinite_ttl']))
 
-    	return True
+        return True
 
     def total_tokens(self):
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Tokens*")
@@ -136,8 +136,8 @@ class Suggestions:
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="If you're not aware of this as part of an authorized break-glass operation, Seal the Vault:") 
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="vault login && vault operator seal")
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="For more information about this visit https://www.vaultproject.io/docs/commands/operator/seal/")
- 		
- 		return True
+        
+        return True
 
     def high_privilege_action(self):
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*:warning: WARNING: ROOT ACCOUNT USED IN PRODUCTION*")     
@@ -183,34 +183,34 @@ class Suggestions:
         return True
 
     def statusserer(self):
-    	status = self.vault.get_health()
+        status = self.vault.get_health()
 
-    	if status.get('version', False):
-    		seal_state = "Sealed" if status['sealed'] == False else "Unsealed"
-    		init = "Not Initialized" if status['initialized'] == False else "Initialized"
-    		perf_mode = status['replication_perf_mode']
-    		auth_methods = len([k  for  k in self.vault.get_auth_methods()])
-    		policies = len([k  for  k in self.vault.get_policies()])
-    		audit_log = self.vault.audit_device_status()
+        if status.get('version', False):
+            seal_state = "Sealed" if status['sealed'] == False else "Unsealed"
+            init = "Not Initialized" if status['initialized'] == False else "Initialized"
+            perf_mode = status['replication_perf_mode']
+            auth_methods = len([k  for  k in self.vault.get_auth_methods()])
+            policies = len([k  for  k in self.vault.get_policies()])
+            audit_log = self.vault.audit_device_status()
 
-    		self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault is reachable :white_check_mark:")
-    		self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault seal state: ".format(seal_state))
-    		self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault: ".format(init))
-    		self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Replication Status: ".format(perf_mode))
-    		
-    		if auth_methods <= 1:
-    			self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You are using UserPass as your only auth method")
+            self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault is reachable :white_check_mark:")
+            self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault seal state: ".format(seal_state))
+            self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault: ".format(init))
+            self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Replication Status: ".format(perf_mode))
+            
+            if auth_methods <= 1:
+                self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You are using UserPass as your only auth method")
 
-    		if policies == 0:
-    			self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You don't have any Vault policies present")
-    		else:
-    			self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault policies present")
+            if policies == 0:
+                self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You don't have any Vault policies present")
+            else:
+                self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault policies present")
 
-    		if audit_log == {}:
-    			self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You don't have the audit logs enabled")
-    		else:
-    			self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault Audit Logs enabled")
-    	else:
-    		self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*:warning: WARNING: Vault is not reachable*")
+            if audit_log == {}:
+                self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You don't have the audit logs enabled")
+            else:
+                self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault Audit Logs enabled")
+        else:
+            self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*:warning: WARNING: Vault is not reachable*")
 
-    	return True
+        return True
