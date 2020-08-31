@@ -6,8 +6,7 @@ import arrow
 
 import logging
 
-from lib.suggestions import Suggestions
-from tinydb import TinyDB, Query
+from tinydb import Query
 from tinydb.operations import increment
 from datetime import datetime
 
@@ -117,9 +116,6 @@ class AuditServer(object):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # python to re-use socket left in TIME_WAIT by a kill process
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            logging.info("#############################")
-            logging.info(str(self.host), str(self.port))
-            logging.info("#############################")
             s.bind((self.host, self.port))
             s.listen()
             conn, addr = s.accept()
