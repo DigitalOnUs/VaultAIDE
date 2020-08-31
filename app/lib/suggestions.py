@@ -3,6 +3,7 @@ from lib.github import Github
 
 class Suggestions:
     def __init__(self, vault_client, pickledb_obj={}):
+        self.github = Github()
         self.vault_client = vault_client
 
         self.db = pickledb_obj
@@ -16,7 +17,7 @@ class Suggestions:
             Version updates
         '''
         versions = self.github.get_latest_releases()
-        current = self.vault.get_version()
+        current = self.vault_client.get_version()
         latest = versions[0].lstrip('v')
 
         if not latest == current:
@@ -55,17 +56,17 @@ class Suggestions:
         '''
             Adoption Statistics
         '''
-        secrets_engine = len([k  for  k in self.vault.get_secrets_engine_list()])
-        auth_methods = len([k  for  k in self.vault.get_auth_methods()])
-        policies = len([k  for  k in self.vault.get_policies()])
-        total_operations = self.vault.vault_operations()
+        secrets_engine = len([k  for  k in self.vault_client.get_secrets_engine_list()])
+        auth_methods = len([k  for  k in self.vault_client.get_auth_methods()])
+        policies = len([k  for  k in self.vault_client.get_policies()])
+        total_operations = self.vault_client.vault_operations()
 
         # Suggestion
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Adoption Stats.* :bar_chart:")
 
         # Check Logs
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Overall Adoption rate this week: {}".format(self.vault.get_overall_week()))
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Overall Adoption rate this month: {}".format(self.vault.get_overall_month()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Overall Adoption rate this week: {}".format(self.vault_client.get_overall_week()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Overall Adoption rate this month: {}".format(self.vault_client.get_overall_month()))
 
         # Dummy data
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault Operations this month: {}".format(total_operations))
@@ -85,16 +86,16 @@ class Suggestions:
             Adoption Statistics Detailed
         '''
 
-        total_entities = self.vault.get_total_entities_count().get('keys', [])
+        total_entities = self.vault_client.get_total_entities_count().get('keys', [])
 
         # Suggestion
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Adoption Details* :bar_chart:")
 
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Total Entities: {}".format(len(total_entities)))
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Total Roles: {}".format(self.vault.get_total_roles()))
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Total Tokens: {}".format(self.vault.get_total_tokens()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Total Roles: {}".format(self.vault_client.get_total_roles()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Total Tokens: {}".format(self.vault_client.get_total_tokens()))
 
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Change: {}".format(self.vault.get_change_percentage()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Change: {}".format(self.vault_client.get_change_percentage()))
 
         return False
 
@@ -102,12 +103,12 @@ class Suggestions:
         '''
             Leases information
         '''
-        leases_detail = self.vault.get_leases_detail()
+        leases_detail = self.vault_client.get_leases_detail()
         
         # Suggestion
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Extant Leases*")
 
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You have {} leases in Vault".format(self.vault.get_total_leases()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="You have {} leases in Vault".format(self.vault_client.get_total_leases()))
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} non renewable".format(leases_detail['non_renewable']))
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} renewable".format(leases_detail['renewable']))
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Longest expire time: {}".format(leases_detail['longest']))
@@ -120,11 +121,11 @@ class Suggestions:
 
     def total_tokens(self):
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Tokens*")
-        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} total".format(self.vault.get_total_tokens()))
+        self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} total".format(self.vault_client.get_total_tokens()))
 
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} service tokens".format())
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} batch tokens".format())
-        # self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} periodic Tokens".format(self.vault.get_auth_methods(namespace = namespace)))
+        # self.slack_client.api_call("chat.postMessage", channel=self.channel, text="{} periodic Tokens".format(self.vault_client.get_auth_methods(namespace = namespace)))
 
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Oldest:* {}".format())
         self.slack_client.api_call("chat.postMessage", channel=self.channel, text="*Newest:* {}".format())
@@ -148,7 +149,7 @@ class Suggestions:
         return True
 
     def vault_posture_score(self):
-        score = self.vault.vault_posture_score()
+        score = self.vault_client.vault_posture_score()
 
         self.slack_client.api_call("chat.postMessage", channel=channel, text="*VaultPosture Score: {}*".format(score))
         self.slack_client.api_call("chat.postMessage", channel=channel, text="_Respond 'Adoption Score Details' for more._")
@@ -156,12 +157,12 @@ class Suggestions:
         return True
 
     def score_details(self, thread=False):
-        score = self.vault.vault_posture_score(thread = thread)
+        score = self.vault_client.vault_posture_score(thread = thread)
 
         return True
 
     def auth_method_suggestion(self):
-        auth_methods = [k  for  k in self.vault.get_auth_methods()]
+        auth_methods = [k  for  k in self.vault_client.get_auth_methods()]
         
         if len(auth_methods) > 1:
             for auth in auth_methods:
@@ -183,15 +184,15 @@ class Suggestions:
         return True
 
     def statusserer(self):
-        status = self.vault.get_health()
+        status = self.vault_client.get_health()
 
         if status.get('version', False):
             seal_state = "Sealed" if status['sealed'] == False else "Unsealed"
             init = "Not Initialized" if status['initialized'] == False else "Initialized"
             perf_mode = status['replication_perf_mode']
-            auth_methods = len([k  for  k in self.vault.get_auth_methods()])
-            policies = len([k  for  k in self.vault.get_policies()])
-            audit_log = self.vault.audit_device_status()
+            auth_methods = len([k  for  k in self.vault_client.get_auth_methods()])
+            policies = len([k  for  k in self.vault_client.get_policies()])
+            audit_log = self.vault_client.audit_device_status()
 
             self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault is reachable :white_check_mark:")
             self.slack_client.api_call("chat.postMessage", channel=self.channel, text="Vault seal state: ".format(seal_state))

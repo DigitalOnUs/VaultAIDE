@@ -9,6 +9,7 @@ from audit.server import AuditServer
 from lib.suggestions import Suggestions
 from lib.ssl import update_ssl
 
+from slackclient import SlackClient
 from multiprocessing import Process
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -30,7 +31,7 @@ db_month = TinyDB('../db/audit/operations.db', default_table='month_operations')
 '''
     All the config variables are in db/configuration/config.db
 '''
-vault_addr = pickle_db.get_data('vault_host')
+vault_addr = str(pickle_db.get_data('vault_host')) + ":" + str(pickle_db.get_data('vault_port'))
 vault_token = pickle_db.get_data('vault_token')
 audit_host = pickle_db.get_data('audit_host')
 audit_port = pickle_db.get_data('audit_port')
@@ -130,7 +131,7 @@ def schedule_suggestions():
 @app.route('/slack/get-answer', methods=['POST', 'GET'])
 def slack_get_answer():
     # Slack bot token
-    sl_token = db.get('slack_token')
+    sl_token = pickle_db.get_data('slack_token')
     slack_client = SlackClient(sl_token)
 
     # Check if this request is a command
